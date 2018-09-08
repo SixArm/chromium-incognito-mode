@@ -1,0 +1,17 @@
+#!/bin/sh -e
+#
+# Firefox private browsing
+#
+# https://nullprogram.com/blog/2018/09/06/
+#
+# Credit: Chris Wellons (wellons@nullprogram.com)
+#
+DIR="${XDG_CACHE_HOME:-$HOME/.cache}"
+mkdir -p -- "$DIR"
+TEMP="$(mktemp -d -- "$DIR/chromium-XXXXXX")"
+trap "rm -rf -- '$TEMP'" INT TERM EXIT
+chromium --user-data-dir="$TEMP" \
+         --no-default-browser-check \
+         --no-first-run \
+         "$@" >/dev/null 2>&1
+	 
