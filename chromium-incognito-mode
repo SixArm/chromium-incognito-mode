@@ -1,17 +1,25 @@
-#!/bin/sh -e
-#
-# Firefox private browsing
+#!/bin/sh
+set -euf
+
+##
+# Chromium incognito mode
 #
 # https://nullprogram.com/blog/2018/09/06/
 #
 # Credit: Chris Wellons (wellons@nullprogram.com)
 #
+# If you use macOS, the Chromium command path is typically
+# /Applications/Chromium.app/Contents/MacOS/Chromium
+##
+
+CHROMIUM="${CHROMIUM:-chromium}"
 DIR="${XDG_CACHE_HOME:-$HOME/.cache}"
 mkdir -p -- "$DIR"
 TEMP="$(mktemp -d -- "$DIR/chromium-XXXXXX")"
 trap "rm -rf -- '$TEMP'" INT TERM EXIT
-chromium --user-data-dir="$TEMP" \
-         --no-default-browser-check \
-         --no-first-run \
-         "$@" >/dev/null 2>&1
+"$CHROMIUM" \
+    --user-data-dir="$TEMP" \
+    --no-default-browser-check \
+    --no-first-run \
+    "$@"
 	 
